@@ -3,6 +3,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import os, sys
 from sklearn.model_selection import train_test_split
+import nltk
 from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
 from nltk.stem import PorterStemmer
@@ -85,19 +86,31 @@ def preprocess(data):
     #data = remove_stop_words(data) #needed again as num2word is giving stop words 101 - one hundred and one
     return data
 
-def entropy1(data, base=None):
-  value, counts = np.unique(data, return_counts=True)
-  return entropy(counts, base=base)
 
+def word_count(captions):
+    data = str(preprocess(captions)).split()
+    return len(data)
 
+# compute text entropy
+# entropy of text distribution over the set of words
+# ref: https://www.aclweb.org/anthology/P19-1101.pdf
+def entropy1(captions, base=None):
+    data = str(preprocess(captions)).split()
+    value, counts = np.unique(data, return_counts=True)
+    return entropy(counts, base=base)
 
-filename = sys.argv[0]
-f = open(filename, "r")
-text = f.read()
-data = str(preprocess(text)).split()
-print("entropy: ",entropy1(data))
-
-
-
-
-
+# compute lexical density
+# measure of the number of lexical/content words as a proportion of the total number of words
+# lexical word tokens (nouns, adjectives, verbs, adverbs)
+# ref: https://en.wikipedia.org/wiki/Lexical_density
+def lexical_density(captions):
+    tokens = word_tokenize(captions.lower())
+    text = nltk.Text(tokens)
+    tags = nltk.pos_tag(text)
+    counts = Counter(tag for word,tag in tags)
+    density = (counts['NN']+counts['NNS']+counts['NNP']+counts['NNPS']+
+              counts['JJ']+counts['JJR']+counts['JJS']+
+              counts['VB']+counts['VBD']+counts['VBG']+counts['VBN']+counts['VBP']+counts['VBZ']+
+              counts['RB']+counts['RBR']+counts['RBS']) / len(tokens)
+              
+    return density

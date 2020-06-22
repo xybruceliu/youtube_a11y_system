@@ -40,19 +40,14 @@ category_dict = {
 43: 'Shows',
 44: 'Trailers'}
 
-def 
+def get_video_info(id_str):
 
-
-for i in range(1000, 1350):
-    id_str = str(df["ID"][i])
-    print(str(i)+"/"+str(len(df["ID"])))
-    print(id_str)
     # video information
 
     video_by_id = api.get_video_by_id(video_id=id_str)
     if (len(video_by_id.items) == 0): 
         print('Invalid video id!')
-        continue
+        return None
     video = video_by_id.items[0]
 
     snippet = video.snippet
@@ -71,25 +66,23 @@ for i in range(1000, 1350):
     channel = channel_by_id.items[0]
 
     # creating dataframe, add in data
-    df_new = df_new.append({'id': id_str, 
-        'title': snippet.title,
-        'channelId': snippet.channelId,
-        'channelTitle': snippet.channelTitle,
-        'channelDescription': channel.snippet.description,
-        'channelLiked': channel.contentDetails.relatedPlaylists.likes,
-        'channelSubs': channel.statistics.subscriberCount, 
-        'description': snippet.description,
-        'duration': isodate.parse_duration(contentDetails.duration).total_seconds(),
-        'caption': contentDetails.caption,
-        'views':statistics.viewCount, 
-        'likes': statistics.likeCount,
-        'dislikes':statistics.dislikeCount,
-        'comments': statistics.commentCount,
-        'tags':snippet.tags, 
-        'categoryId': snippet.categoryId,
-        'category':category_dict[int(snippet.categoryId)], 
-        'topicCategories':[sub.replace('https://en.wikipedia.org/wiki/', '') for sub in topicCategories]}, ignore_index=True)
+    video_info = {'id': id_str, 
+                'title': snippet.title,
+                'channelId': snippet.channelId,
+                'channelTitle': snippet.channelTitle,
+                'channelDescription': channel.snippet.description,
+                'channelLiked': channel.contentDetails.relatedPlaylists.likes,
+                'channelSubs': channel.statistics.subscriberCount, 
+                'description': snippet.description,
+                'duration': isodate.parse_duration(contentDetails.duration).total_seconds(),
+                'caption': contentDetails.caption,
+                'views':statistics.viewCount, 
+                'likes': statistics.likeCount,
+                'dislikes':statistics.dislikeCount,
+                'comments': statistics.commentCount,
+                'tags':snippet.tags, 
+                'categoryId': snippet.categoryId,
+                'category':category_dict[int(snippet.categoryId)], 
+                'topicCategories':[sub.replace('https://en.wikipedia.org/wiki/', '') for sub in topicCategories]}
 
-
-
-df_new.to_csv("new_samples_trending.csv", index=False)
+    return video_info

@@ -14,7 +14,7 @@ isodate == 0.6.0
 matplotlib == 3.1.3
 
 # youtube_a11y_system/compute_a11y/compute_text_a11y.py: 26
-nltk == 3.0.5
+nltk == 3.4.5
 
 # youtube_a11y_system/compute_a11y/compute_text_a11y.py: 11
 num2words == 0.5.10

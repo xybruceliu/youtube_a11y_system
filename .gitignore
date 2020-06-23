@@ -98,11 +98,15 @@ ipython_config.py
 __pypackages__/
 # Credentials
 /cred_keys/*
-/caption_examples/*
-/video_examples/*
-/audio_examples/*
-/scenes_examples/*
 
+# Created directories for videos
+/caption/*
+/video/*
+/audio/*
+/scenes/*
+/gaps/*
+/tmp/*
+/words/*
 
 # Celery stuff
 celerybeat-schedule

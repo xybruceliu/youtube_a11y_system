@@ -36,7 +36,6 @@ class Video:
         self.captions = get_cc(self.id)
 
 
-
     ###########################
     ### TEXT INFORMATION ###
 

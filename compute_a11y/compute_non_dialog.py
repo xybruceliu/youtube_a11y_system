@@ -100,5 +100,3 @@ def compute_non_dialog_percentage(video_id, video_dur, words_path, gaps_path):
 
             return sum([g["gap_duration"] for g in gaps]) / twords[-1]["end"]
 
-            
-
